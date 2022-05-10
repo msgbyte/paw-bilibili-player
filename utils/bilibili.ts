@@ -12,7 +12,7 @@ const BILIBILI_KEY = 'aHRmhWMLkdeMuILqORnYZocwMBpMEOdt';
  */
 export async function getBilibiliVideoUrl(
   url: string
-): Promise<string | undefined> {
+): Promise<{ url: string } | undefined> {
   if (url.includes('anime/')) {
     // 暂不支持 anime
     return undefined;
@@ -38,5 +38,7 @@ export async function getBilibiliVideoUrl(
     })
     .json();
 
-  return _.get(playurlRes, 'durl.0.url');
+  return {
+    url: _.get(playurlRes, 'durl.0.url'),
+  };
 }

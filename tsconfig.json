@@ -9,6 +9,7 @@
     "noEmit": true,
     "esModuleInterop": true,
     // "module": "esnext",
+    "importsNotUsedAsValues": "error",
     "module": "CommonJS",
     "moduleResolution": "node",
     "resolveJsonModule": true,
