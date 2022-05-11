@@ -1,4 +1,4 @@
-import {
+import type {
   GetServerSidePropsContext,
   GetServerSidePropsResult,
   InferGetServerSidePropsType,
@@ -54,25 +54,27 @@ const Player: NextPage<
     videoUrl
   )}&origin=${toBase64(pageUrl)}`;
 
-  return (
-    <div>
-      <h2>原地址: {pageUrl}</h2>
-      <p>
-        视频地址:{' '}
-        <a href={videoUrl} target="_blank" rel="noreferrer">
-          {videoUrl}
-        </a>{' '}
-      </p>
-      <p>
-        代理地址:{' '}
-        <a href={proxyUrl} target="_blank" rel="noreferrer">
-          {proxyUrl}
-        </a>
-      </p>
+  return <DPlayer url={proxyUrl} style={{ width: '100%', height: '100%' }} />;
 
-      <DPlayer url={proxyUrl} />
-    </div>
-  );
+  // return (
+  //   <div>
+  //     <h2>原地址: {pageUrl}</h2>
+  //     <p>
+  //       视频地址:{' '}
+  //       <a href={videoUrl} target="_blank" rel="noreferrer">
+  //         {videoUrl}
+  //       </a>{' '}
+  //     </p>
+  //     <p>
+  //       代理地址:{' '}
+  //       <a href={proxyUrl} target="_blank" rel="noreferrer">
+  //         {proxyUrl}
+  //       </a>
+  //     </p>
+
+  //     <DPlayer url={proxyUrl} />
+  //   </div>
+  // );
 };
 Player.displayName = 'Player';
 

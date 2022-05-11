@@ -14,3 +14,9 @@ a {
 * {
   box-sizing: border-box;
 }
+
+
+/* For dplayer */
+button.dplayer-icon.dplayer-full-in-icon, .dplayer-icon.dplayer-camera-icon {
+  display: none !important;
+}

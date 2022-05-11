@@ -27,7 +27,9 @@ export default async function handler(
       },
     })
     .on('downloadProgress', (progress) => {
-      console.log('progress', progress);
+      if (process.env.NODE_ENV === 'development') {
+        console.log('progress', progress);
+      }
     })
     .on('error', (error) => {
       console.error('error', error);

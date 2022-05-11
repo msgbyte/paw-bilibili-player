@@ -1,8 +1,10 @@
+import type { DPlayerOptions } from 'dplayer';
 import { useEffect, useRef } from 'react';
 
 const DPlayer: React.FC<{
   url: string;
-}> = ({ url }) => {
+  style?: React.CSSProperties;
+}> = ({ url, style }) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -12,7 +14,7 @@ const DPlayer: React.FC<{
     ]).then(([flvjs, Dplayer]) => {
       (window as any).flvjs = flvjs;
 
-      const options = {
+      const options: DPlayerOptions = {
         container: containerRef.current,
         video: {
           url: url,
@@ -20,22 +22,23 @@ const DPlayer: React.FC<{
         },
         contextmenu: [
           {
-            text: 'qwe',
-            link: '',
+            text: '关于 paw-bilibili-player',
+            link: 'https://github.com/msgbyte/paw-bilibili-player',
           },
         ],
-        autoplay: true,
-        live: true,
+        autoplay: false,
         screenshot: true,
-        logo: './static/logo.png',
+        preload: 'none',
+        logo: '/logo.png',
       };
       const player = new Dplayer(options);
+      player.fullScreen.request('web');
       // this.dp = player;
       console.log(player);
     });
   }, []);
 
-  return <div ref={containerRef} />;
+  return <div ref={containerRef} style={style} />;
 };
 
 export default DPlayer;
