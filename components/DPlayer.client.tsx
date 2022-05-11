@@ -3,8 +3,9 @@ import { useEffect, useRef } from 'react';
 
 const DPlayer: React.FC<{
   url: string;
+  pic?: string;
   style?: React.CSSProperties;
-}> = ({ url, style }) => {
+}> = ({ url, pic, style }) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -19,6 +20,8 @@ const DPlayer: React.FC<{
         video: {
           url: url,
           type: 'flv',
+          pic,
+          thumbnails: pic,
         },
         contextmenu: [
           {

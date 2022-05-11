@@ -14,6 +14,7 @@ export const getServerSideProps = async (
   GetServerSidePropsResult<{
     pageUrl: string;
     videoUrl: string;
+    picUrl: string;
   }>
 > => {
   const url = context.query.url?.toString();
@@ -31,6 +32,7 @@ export const getServerSideProps = async (
   }
 
   const videoUrl = info.url;
+  const picUrl = info.thumbnail;
 
   context.res.setHeader(
     'Cache-Control',
@@ -43,18 +45,28 @@ export const getServerSideProps = async (
     props: {
       pageUrl: url,
       videoUrl,
+      picUrl,
     },
   };
 };
 
 const Player: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
-> = ({ pageUrl, videoUrl }) => {
-  const proxyUrl = `/api/proxy/video?url=${toBase64(
+> = ({ pageUrl, videoUrl, picUrl }) => {
+  const videoProxyUrl = `/api/proxy/video?url=${toBase64(
     videoUrl
   )}&origin=${toBase64(pageUrl)}`;
+  const picProxyUrl = picUrl
+    ? `/api/proxy/video?url=${toBase64(picUrl)}&origin=${toBase64(pageUrl)}`
+    : undefined;
 
-  return <DPlayer url={proxyUrl} style={{ width: '100%', height: '100%' }} />;
+  return (
+    <DPlayer
+      url={videoProxyUrl}
+      pic={picProxyUrl}
+      style={{ width: '100%', height: '100%' }}
+    />
+  );
 
   // return (
   //   <div>
