@@ -53,17 +53,11 @@ export const getServerSideProps = async (
 const Player: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ pageUrl, videoUrl, picUrl }) => {
-  const videoProxyUrl = `/api/proxy/video?url=${toBase64(
-    videoUrl
-  )}&origin=${toBase64(pageUrl)}`;
-  const picProxyUrl = picUrl
-    ? `/api/proxy/video?url=${toBase64(picUrl)}&origin=${toBase64(pageUrl)}`
-    : undefined;
-
   return (
     <DPlayer
-      url={videoProxyUrl}
-      pic={picProxyUrl}
+      pageUrl={pageUrl}
+      videoUrl={videoUrl}
+      picUrl={picUrl}
       style={{ width: '100%', height: '100%' }}
     />
   );

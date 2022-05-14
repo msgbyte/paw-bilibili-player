@@ -1,12 +1,21 @@
 import type { DPlayerOptions } from 'dplayer';
 import { useEffect, useRef } from 'react';
+import { toBase64 } from '../utils/base64';
+import { saveAs } from 'file-saver';
 
 const DPlayer: React.FC<{
-  url: string;
-  pic?: string;
+  pageUrl: string;
+  videoUrl: string;
+  picUrl: string;
   style?: React.CSSProperties;
-}> = ({ url, pic, style }) => {
+}> = ({ pageUrl, videoUrl, picUrl, style }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const videoProxyUrl = `/api/proxy/video?url=${toBase64(
+    videoUrl
+  )}&origin=${toBase64(pageUrl)}`;
+  const picProxyUrl = picUrl
+    ? `/api/proxy/video?url=${toBase64(picUrl)}&origin=${toBase64(pageUrl)}`
+    : undefined;
 
   useEffect(() => {
     Promise.all([
@@ -18,12 +27,30 @@ const DPlayer: React.FC<{
       const options: DPlayerOptions = {
         container: containerRef.current,
         video: {
-          url: url,
+          url: videoProxyUrl,
           type: 'flv',
-          pic,
-          thumbnails: pic,
+          pic: picProxyUrl,
+          thumbnails: picProxyUrl,
         },
         contextmenu: [
+          {
+            text: '打开原视频',
+            click: () => {
+              window.open(pageUrl);
+            },
+          },
+          {
+            text: '下载封面',
+            click: () => {
+              saveAs(picProxyUrl ?? picUrl, 'cover.png');
+            },
+          },
+          {
+            text: '下载原视频',
+            click: () => {
+              saveAs(videoUrl, 'video.flv');
+            },
+          },
           {
             text: '关于 paw-bilibili-player',
             link: 'https://github.com/msgbyte/paw-bilibili-player',
