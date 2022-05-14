@@ -2,6 +2,8 @@
 
 因为 bilibili 的iframe 播放器过于简陋，因此我帮阿B重新做了一个播放器
 
+在B站观看演示视频: [点击此处](https://www.bilibili.com/video/BV1LZ4y187pP/)
+
 ## 功能
 
 - Iframe API like `youtube` (WIP)
