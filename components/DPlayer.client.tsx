@@ -18,54 +18,50 @@ const DPlayer: React.FC<{
     : undefined;
 
   useEffect(() => {
-    Promise.all([
-      import('flv.js'),
-      import('dplayer').then((m) => m.default),
-    ]).then(([flvjs, Dplayer]) => {
-      (window as any).flvjs = flvjs;
-
-      const options: DPlayerOptions = {
-        container: containerRef.current,
-        video: {
-          url: videoProxyUrl,
-          type: 'flv',
-          pic: picProxyUrl,
-          thumbnails: picProxyUrl,
-        },
-        contextmenu: [
-          {
-            text: '打开原视频',
-            click: () => {
-              window.open(pageUrl);
+    Promise.all([import('dplayer').then((m) => m.default)]).then(
+      ([Dplayer]) => {
+        const options: DPlayerOptions = {
+          container: containerRef.current,
+          video: {
+            url: videoProxyUrl,
+            pic: picProxyUrl,
+            thumbnails: picProxyUrl,
+          },
+          contextmenu: [
+            {
+              text: '打开原视频',
+              click: () => {
+                window.open(pageUrl);
+              },
             },
-          },
-          {
-            text: '下载封面',
-            click: () => {
-              saveAs(picProxyUrl ?? picUrl, 'cover.png');
+            {
+              text: '下载封面',
+              click: () => {
+                saveAs(picProxyUrl ?? picUrl, 'cover.png');
+              },
             },
-          },
-          {
-            text: '下载原视频',
-            click: () => {
-              saveAs(videoUrl, 'video.flv');
+            {
+              text: '下载原视频',
+              click: () => {
+                saveAs(videoUrl, 'video.flv');
+              },
             },
-          },
-          {
-            text: '关于 paw-bilibili-player',
-            link: 'https://github.com/msgbyte/paw-bilibili-player',
-          },
-        ],
-        autoplay: false,
-        screenshot: true,
-        preload: 'none',
-        logo: '/logo.png',
-      };
-      const player = new Dplayer(options);
-      player.fullScreen.request('web');
-      // this.dp = player;
-      console.log(player);
-    });
+            {
+              text: '关于 paw-bilibili-player',
+              link: 'https://github.com/msgbyte/paw-bilibili-player',
+            },
+          ],
+          autoplay: false,
+          screenshot: true,
+          preload: 'none',
+          logo: '/logo.png',
+        };
+        const player = new Dplayer(options);
+        player.fullScreen.request('web');
+        // this.dp = player;
+        console.log(player);
+      }
+    );
   }, []);
 
   return <div ref={containerRef} style={style} />;

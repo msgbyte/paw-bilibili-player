@@ -2,12 +2,13 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import got from 'got';
 import { fromBase64 } from '../../../utils/base64';
+import _omit from 'lodash/omit';
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const url = fromBase64(req.query?.url.toString());
+  let url = fromBase64(req.query?.url.toString());
   const origin = fromBase64(req.query?.origin.toString());
 
   res.setHeader(
@@ -15,10 +16,15 @@ export default async function handler(
     `public, s-maxage=${60 * 60}, stale-while-revalidate=${60 * 60}`
   );
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Content-Type', 'video/x-flv');
+  res.setHeader('Content-Type', 'video/mp4');
+  if (url.startsWith('//')) {
+    url = 'https:' + url;
+  }
+
   got
     .stream(url, {
       headers: {
+        ..._omit(req.headers, ['host']), // support jump load
         Accept: 'application/json',
         Referer: origin,
         Origin: origin,
